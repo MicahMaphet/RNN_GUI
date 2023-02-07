@@ -1,3 +1,7 @@
+'''
+https://www.tensorflow.org/text/tutorials/text_generation
+'''
+
 import tensorflow as tf
 import os
 import numpy as np

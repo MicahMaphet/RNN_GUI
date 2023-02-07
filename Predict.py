@@ -8,6 +8,7 @@ dark_mode = False
 win = Tk()
 
 length_scale = Scale(win, from_=0, to=500, length=250, width=20)
+length_scale.set(length)
 length_scale.place(x=450, y=60)
 
 prompt = Text(win, width=50, height=25)
