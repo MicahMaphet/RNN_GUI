@@ -8,9 +8,9 @@ dark_mode = False
 win = Tk()
 
 length_scale = Scale(win, from_=0, to=500, length=250, width=20)
-length_scale.place(x=300, y=60)
+length_scale.place(x=450, y=60)
 
-prompt = Text(win, width=30, height=20)
+prompt = Text(win, width=50, height=25)
 prompt.place(x=25, y=25)
 def updateColor(event=None):
   prompt.tag_add("color", "1.0", "end")
@@ -28,7 +28,7 @@ def extend_text():
   prompt.insert("1.0", predict_text(text, length_scale.get()))
   updateColor()
 extend_button = Button(win, text="EXTEND", command=extend_text)
-extend_button.place(x=300, y=25)
+extend_button.place(x=450, y=25)
 
 def darkModeToggle():
   global dark_mode
@@ -43,7 +43,7 @@ def darkModeToggle():
     prompt.config(bg="#FDFDFD")
   updateColor()
 dark_mode_button = Button(win, text="Light Mode", command=darkModeToggle)
-dark_mode_button.place(x=300, y=350)
+dark_mode_button.place(x=450, y=350)
 darkModeToggle()
 
 win.title("Text completion")
