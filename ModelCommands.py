@@ -29,3 +29,11 @@ def predict_letter(text):
     result = tf.strings.join(result)
     extended = result[0].numpy().decode('utf-8')
     return extended
+
+def extend_text(prompt, length_scale, updateColor):
+  text = prompt.get("1.0", "end")
+  print(text)
+  print("\n\n" in text)
+  prompt.delete("1.0", "end")
+  prompt.insert("1.0", predict_text(text, length_scale.get()))
+  updateColor()

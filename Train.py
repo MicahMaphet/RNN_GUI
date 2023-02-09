@@ -7,10 +7,11 @@ import os
 import numpy as np
 import time
 
-EPOCHS = 5
-path_to_file = "training data.txt"
+BATCH_SIZE = 64 # over 2048 can max out 64 GB of ram
+EPOCHS = 5 # epochs take about 15 minute
+# link the path to the file you want to train the network on
+path_to_file = "training data.txt" 
 
-# Read, then decode for py2 compat.
 text = open(path_to_file, 'rb').read().decode(encoding='utf-8')
 vocab = sorted(set(text))
 
@@ -45,8 +46,6 @@ def split_input_target(sequence):
     return input_text, target_text
     
 dataset = sequences.map(split_input_target)
-
-BATCH_SIZE = 512
 
 BUFFER_SIZE = 10000
 
@@ -155,7 +154,8 @@ one_step_model = OneStep(model, chars_from_ids, ids_from_chars)
 
 start = time.time()
 states = None
-next_char = tf.constant(['ROMEO:'])
+# the network will guess the next 1000 characters after 'e'
+next_char = tf.constant(['e'])
 result = [next_char]
 
 for n in range(1000):
