@@ -7,6 +7,7 @@ import os
 import numpy as np
 import time
 
+EPOCHS = 5
 path_to_file = "training data.txt"
 
 # Read, then decode for py2 compat.
@@ -104,7 +105,7 @@ checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     filepath=checkpoint_prefix,
     save_weights_only=True)
 
-history = model.fit(dataset, epochs=100, callbacks=[checkpoint_callback])
+history = model.fit(dataset, epochs=EPOCHS, callbacks=[checkpoint_callback])
 
 class OneStep(tf.keras.Model):
   def __init__(self, model, chars_from_ids, ids_from_chars, temperature=1.0):
