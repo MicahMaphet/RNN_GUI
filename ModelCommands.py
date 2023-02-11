@@ -29,5 +29,3 @@ def predict_letter(text):
     result = tf.strings.join(result)
     extended = result[0].numpy().decode('utf-8')
     return extended
-
-
