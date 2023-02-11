@@ -25,8 +25,15 @@ def updateColor(event=None):
 # the updateColor command will run ever time a key is pressed in the text prompt
 prompt.bind("<Key>", updateColor) 
 
-
-extend_button = Button(win, text="EXTEND", command=ModelCommands.extend_text(prompt, length_scale, updateColor))
+def extend_text():
+  text = prompt.get("1.0", "end")
+  print(text) 
+  print("\n\n" in text)
+  prompt.delete("1.0", "end")
+  prompt.insert("1.0", ModelCommands.predict_text(text, 
+                                                length_scale.get()))
+  updateColor()
+extend_button = Button(win, text="EXTEND", command=extend_text())
 extend_button.place(x=650, y=25)
 
 def darkModeToggle():
