@@ -16,14 +16,9 @@ current_text_version = 0
 # saves the text in the prompt
 def save():
   global current_text_version
-  print("|current version:")
-  print(text_versions[current_text_version])
-  print("actual prompt:")
-  print(prompt.get("1.0", "end") + "|")
   if text_versions[current_text_version] != prompt.get("1.0", "end"):
     current_text_version += 1 # updates the version to keep in sync
-    text_versions.insert(current_text_version+1, prompt.get("1.0", "end"))
-    print(f"| { current_text_version } |")
+    text_versions.insert(current_text_version, prompt.get("1.0", "end"))
 
 # A scale widget for setting the length of the text to be extended
 length_scale = Scale(win, from_=0, to=500, length=250, width=20)
@@ -35,16 +30,21 @@ def updateColor():
     prompt.tag_config("color", foreground="white")
   else:
     prompt.tag_config("color", foreground="black")
+
 def onKeyPress(event=None):
-  save() # saves the text prompt (for undo and redo)
-  updateColor() # updates the color (for dark mode)
+  print(f"| { current_text_version, len(text_versions) } |")
+  print(prompt.get("1.0", "end"))
+  key = event.keysym
+  buttons = ["Shift_L", "Shift_R", "Caps_Lock", "Up", "Down", "Left", "Right", "Alt_L", "Alt_R", "Control_L", "Control_R", "Fn", "Super_L", "Home", "Prior", "Next", "End"]
+  if key not in buttons:
+    save() # saves the text prompt (for undo and redo)
+    updateColor() # updates the color (for dark mode)
 prompt.bind("<Key>", onKeyPress)
 
 def extend_text():
   save() # saves the model (for undo and redo)
   text = prompt.get("1.0", "end")
-  print(text)
-  print("\n\n" in text)
+
   prompt.delete("1.0", "end")
   prompt.insert("1.0", predict_text(text, length_scale.get()))
   updateColor()
@@ -54,18 +54,25 @@ extend_button.place(x=650, y=25)
 # revert back to the previous state of the text in the prompt
 def undo():
   global current_text_version
-  if current_text_version > 0: 
-    save() # save the text before deleting it (for redoing)
-    current_text_version -= 2
-  
-  print(f"current version: { current_text_version } \
-          \ntext versions length: { len(text_versions) }")
-  prompt.delete("1.0", "end") # delete the text in the prompt
-  # adds the text of the previous text version to the prompt
-  prompt.insert("1.0", text_versions[current_text_version])
+  if current_text_version >= 0:
+    if current_text_version == len(text_versions) - 1:
+      save() # save the text before deleting it (for redo)
+      current_text_version -= 1 # save increases it, this undoes that
+    if current_text_version <= len(text_versions):
+      prompt.delete("1.0", "end") # delete the text in the prompt
+      # adds the text of the previous text version to the prompt
+      prompt.insert("1.0", text_versions[current_text_version])
+      # if the current text_version is more than 0, decrement it
+      # if this was not checked it would go into a negative index
+      if current_text_version > 0: current_text_version -= 1
+
+undo_redo_frame = Frame(win, width=50, height=50)
+undo_redo_frame.place(x=720, y=25)
+
 # the button to undo the text
-undo_button = Button(win, text="undo", command=undo)
-undo_button.place(x=700, y=25)
+undo_button = Button(undo_redo_frame, text="undo", command=undo)
+undo_button.place(x=0, y=0)
+
 
 def darkModeToggle():
   global dark_mode
