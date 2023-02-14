@@ -1,2 +1,4 @@
 # ignore pycache
 pycache/
+
+/test.py
