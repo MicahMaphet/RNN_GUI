@@ -77,15 +77,15 @@ def redo():
     prompt.insert("1.0", text_versions[current_text_version])
 
 # the frame to organize the undo and redo buttons
-undo_redo_frame = Frame(win, width=50, height=60)
+undo_redo_frame = Frame(win, width=45, height=60)
 undo_redo_frame.place(x=720, y=25)
 
 # the button to undo the text
-undo_button = Button(undo_redo_frame, text="undo", command=undo)
+undo_button = Button(undo_redo_frame, text="undo", command=undo, width=5)
 undo_button.place(x=0, y=0)
 
 # the button to redo the text
-redo_button = Button(undo_redo_frame, text="redo", command=redo)
+redo_button = Button(undo_redo_frame, text="redo", command=redo, width=5)
 redo_button.place(x=0, y=30)
 
 
