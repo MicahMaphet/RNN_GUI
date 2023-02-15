@@ -66,12 +66,27 @@ def undo():
       # if this was not checked it would go into a negative index
       if current_text_version > 0: current_text_version -= 1
 
-undo_redo_frame = Frame(win, width=50, height=50)
+def redo():
+  global current_text_version
+  if current_text_version < len(text_versions) - 1:
+    current_text_version += 1 # increment the version, redo
+    if prompt.get("1.0", "end")[:-1] == text_versions[current_text_version]:
+      current_text_version += 1
+    prompt.delete("1.0", "end") # delete the text in the prompt
+    # adds the text of the next text version to the prompt
+    prompt.insert("1.0", text_versions[current_text_version])
+
+# the frame to organize the undo and redo buttons
+undo_redo_frame = Frame(win, width=50, height=60)
 undo_redo_frame.place(x=720, y=25)
 
 # the button to undo the text
 undo_button = Button(undo_redo_frame, text="undo", command=undo)
 undo_button.place(x=0, y=0)
+
+# the button to redo the text
+redo_button = Button(undo_redo_frame, text="redo", command=redo)
+redo_button.place(x=0, y=30)
 
 
 def darkModeToggle():
