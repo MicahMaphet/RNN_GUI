@@ -1,5 +1,5 @@
 # ignore pycache
 __pycache__/
 
-# ignore testing folder x
+# ignore testing folder y
 /test.py
