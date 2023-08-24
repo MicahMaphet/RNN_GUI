@@ -46,7 +46,7 @@ def split_input_target(sequence):
     
 dataset = sequences.map(split_input_target)
 
-BATCH_SIZE = 512
+BATCH_SIZE = 6000
 
 BUFFER_SIZE = 10000
 
